@@ -1,0 +1,90 @@
+<!DOCTYPE html5>
+<html>
+
+<head>
+    <title>SHOPING LIST</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  
+
+</head>
+
+<body>
+    <div id="heading">
+        <h1>MY SHOPING LIST</h1>
+    </div>
+    <br><br>
+    <div ng-app="myApp" ng-controller="namesCtrl" ng-init="init=''">
+        <center>
+            <br><br><br><br><br>
+            <input ng-model="item" type="text" id="in1" placeholder="Enter item" required><br>
+            <br>
+            <p>{{errortext}}</p>
+            <button id="b1" type="button" ng-click="addItem()">ADD</button>
+            <button id="b4" type="button" ng-click="viewall()">Viewall</button>
+            <button id="b3" type="button" ng-click="find()">FIND</button>
+            <button id="b2" type="button" ng-click="del()">CLR</button>
+            <br>
+            <br>
+            <div>
+                <div class="li" ng-repeat="x in names | filter:init">
+                    {{x}}
+                    <i class="fa fa-check-square-o" style="font-size:23px;float:right;color:grey;" onclick="colorchange(this)"></i>
+                    <i class="material-icons" id="hide"  ng-click="removeItem($index)">delete</i>
+                </div>
+            </div>
+        </center>
+    </div>
+    <script>
+        var x1=0;
+        function colorchange(x)
+        {
+            if( x.style.color=="grey")
+            {
+                x.style.color="green";
+            }
+            else
+            {
+                x.style.color="grey";
+            }
+        }
+        angular.module('myApp', []).controller('namesCtrl', function ($scope) {
+            $scope.names = [
+                'milk', 'pen', 'pencil'
+            ];
+            $scope.find = function () {
+                $scope.errortext = "";
+                if (!$scope.item) { $scope.errortext = "Enter the element to search."; return; }
+                $scope.init = document.getElementById('in1').value;
+            }
+            $scope.viewall = function () {
+                $scope.init = '';
+                $scope.errortext = "";
+                document.getElementById('in1').value = "";
+            }
+            $scope.addItem = function () {
+                $scope.errortext = "";
+                if (!$scope.item) { $scope.errortext = "Enter the element."; return; }
+                if ($scope.names.indexOf($scope.item) == -1) {
+                    $scope.names.push($scope.item);
+                } else {
+                    $scope.errortext = "The item is already in your shopping list.";
+                }
+            }
+            $scope.del = function () {
+                document.getElementById('in1').value = "";
+                $scope.errortext = "ALL ITEMS ARE CLEARED";
+                $scope.names.splice(0);
+            }
+            $scope.removeItem = function (x) {
+                $scope.names.splice(x, 1);
+            };
+        });
+    </script>
+</body>
+
+</html>
